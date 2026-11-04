@@ -1,0 +1,222 @@
+mode: managed
+output_root: data/evaluation
+reuse_policy: fresh
+
+cost:
+  # Frozen before formal search; CLI and campaign files may not override these.
+  tendon_weight: 0.5
+  frf_weight: 0.5
+
+references:
+  traction_real_forces_n:
+    x_v0p01: 412.02
+    x_v0p05: 441.45
+    x_v0p10: 490.50
+    y_v0p01: 353.16
+    y_v0p05: 372.78
+    y_v0p10: 392.40
+  # Frozen mean/std/weight reference derived once from the three 20260625 runs.
+  frf_real_reference: data_real_lab/frf_x_A0p10_three_run_reference.csv
+
+offline:
+  traction_sim_run_dirs:
+    x_v0p01:
+    x_v0p05:
+    x_v0p10:
+    y_v0p01:
+    y_v0p05:
+    y_v0p10:
+  frf_sim_summary:
+
+analyzers:
+  traction:
+    measurement_method: tendon_limit
+    steady_window: 2.0
+    steady_window_step: 0.25
+    min_observation: 2.0
+    required_stable_windows: 4
+    max_wait: 60.0
+    min_tendon_active_ratio: 0.95
+    max_force_cv: 0.05
+    max_force_slope_n_s: 0.5
+    max_constraint_extension_m: 0.005
+    max_steady_base_velocity_mps: 0.005
+    max_i_term_slope_nm_s: 0.005
+    min_i_clamp_ratio: 0.95
+    reject_on_wheel_saturation: false
+    wheel_saturation_ratio_limit: 0.99
+    strict: true
+    write_summary: true
+    plots: true
+  frf:
+    grid_rate_hz: 100.0
+    discard_cycles: 2.0
+    ramp_cycles: 1.0
+    analysis_cycles: 4
+    min_analysis_cycles: 2.0
+    max_harmonic: 7
+    nyquist_safety: 0.90
+    plots: true
+    html: true
+
+runtime_assets:
+  source_urdf: src/rbkairos/urdf/rbkairos.urdf
+  source_mjcf: src/rbkairos/mujoco/rbkairos.xml
+  source_traction_scenes:
+    x: src/rbkairos/mujoco/rbkairos_scene_tendon_test_x.xml
+    y: src/rbkairos/mujoco/rbkairos_scene_tendon_test_y.xml
+  source_config: src/rbkairos/config/mujoco_mecanum_drive.yaml
+
+managed:
+  startup_wait_s: 5.0
+  shutdown_timeout_s: 10.0
+  force_kill_timeout_s: 1.0
+  command_timeout_margin_s: 30.0
+  ros_graph_checks: true
+  ros_graph_preflight_wait_s: 0.5
+  ros_graph_cleanup_wait_s: 5.0
+  ros_graph_force_kill_wait_s: 1.0
+  ros_graph_poll_s: 0.25
+  ros_graph_node_list_timeout_s: 1.0
+  ros_graph_use_daemon: false
+  ros_graph_spin_time_s: 0.1
+  ros_graph_log_dir: /tmp/rbkairos_ros_graph_checks
+  ros_graph_blocking_nodes:
+    - /robot_state_publisher
+    - /mujoco_sim_ros2_node
+    - /controller_manager
+  controller_readiness_checks: true
+  controller_manager_node: /controller_manager
+  controller_readiness_wait_s: 3.0
+  controller_readiness_poll_s: 0.25
+  controller_list_timeout_s: 2.0
+  controller_required_active:
+    - joint_state_broadcaster
+    - mecanum_base_controller
+  logs_dir: logs
+  traction_output_dirs:
+    x_v0p01: traction/x_v0p01
+    x_v0p05: traction/x_v0p05
+    x_v0p10: traction/x_v0p10
+    y_v0p01: traction/y_v0p01
+    y_v0p05: traction/y_v0p05
+    y_v0p10: traction/y_v0p10
+  frf_output_dir: frf
+  frf_analysis_dir: frf/analysis
+
+traction_experiments:
+  x_v0p01: &traction_x
+    axis: x
+    velocity_x: 0.01
+    warmup_duration: 1.0
+    ramp_duration: 0.5
+    min_observation_duration: 2.0
+    max_wait_duration: 60.0
+    post_stop_duration: 0.5
+    steady_window: 2.0
+    steady_window_step: 0.25
+    required_stable_windows: 4
+    publish_rate: 100.0
+    observer_publish_rate: 100.0
+    startup_timeout: 10.0
+    topic_timeout: 1.0
+    max_warmup_tension: 1.0
+    max_warmup_active_ratio: 0.05
+    min_active_ratio: 0.95
+    max_force_cv: 0.05
+    max_force_slope: 0.5
+    max_constraint_extension: 0.005
+    max_steady_base_velocity: 0.005
+    max_i_term_slope: 0.005
+    min_i_clamp_ratio: 0.95
+    abort_extension: 0.02
+    abort_tension: 2000.0
+    max_x: 0.25
+    max_y: 0.25
+    max_yaw_deg: 10.0
+    replicate: 1
+    solver_variant: baseline
+    run_label: evaluation_x_v0p01
+    tendon_name: traction_cable_x
+    sensor_name: traction_cable_x_limit_force
+    attach_site_name: traction_attach_x
+    anchor_site_name: traction_anchor_x
+    expected_ur5_preset: up
+    ur5_position_tolerance: 0.01
+    ur5_velocity_tolerance: 0.01
+  x_v0p05:
+    <<: *traction_x
+    velocity_x: 0.05
+    run_label: evaluation_x_v0p05
+  x_v0p10:
+    <<: *traction_x
+    velocity_x: 0.10
+    run_label: evaluation_x_v0p10
+  y_v0p01: &traction_y
+    axis: y
+    velocity_y: 0.01
+    warmup_duration: 1.0
+    ramp_duration: 0.5
+    min_observation_duration: 2.0
+    max_wait_duration: 60.0
+    post_stop_duration: 0.5
+    steady_window: 2.0
+    steady_window_step: 0.25
+    required_stable_windows: 4
+    publish_rate: 100.0
+    observer_publish_rate: 100.0
+    startup_timeout: 10.0
+    topic_timeout: 1.0
+    max_warmup_tension: 1.0
+    max_warmup_active_ratio: 0.05
+    min_active_ratio: 0.95
+    max_force_cv: 0.05
+    max_force_slope: 0.5
+    max_constraint_extension: 0.005
+    max_steady_base_velocity: 0.005
+    max_i_term_slope: 0.005
+    min_i_clamp_ratio: 0.95
+    abort_extension: 0.02
+    abort_tension: 2000.0
+    max_x: 0.25
+    max_y: 0.25
+    max_yaw_deg: 10.0
+    replicate: 1
+    solver_variant: baseline
+    run_label: evaluation_y_v0p01
+    tendon_name: traction_cable_y
+    sensor_name: traction_cable_y_limit_force
+    attach_site_name: traction_attach_y
+    anchor_site_name: traction_anchor_y
+    expected_ur5_preset: up
+    ur5_position_tolerance: 0.01
+    ur5_velocity_tolerance: 0.01
+  y_v0p05:
+    <<: *traction_y
+    velocity_y: 0.05
+    run_label: evaluation_y_v0p05
+  y_v0p10:
+    <<: *traction_y
+    velocity_y: 0.10
+    run_label: evaluation_y_v0p10
+
+frf_experiment:
+  environment: sim
+  axis: x
+  amplitude: 0.10
+  frequencies: [0.20, 0.30, 0.50, 1.00, 1.80, 2.80, 4.00]
+  cycles: 6.0
+  discard_cycles: 2.0
+  ramp_cycles: 1.0
+  publish_rate: 200.0
+  settle_between_frequencies: 1.0
+  max_x: 1.5
+  max_y: 0.15
+  max_yaw_deg: 10.0
+  require_runtime_metadata: false
+  # Required by conditional FRF reuse. This records only controller-rate
+  # latch/high-water summaries in metadata; raw PID CSV remains disabled.
+  require_pid_nonbinding_evidence: true
+  write_full_dof_state: false
+  write_raw_dof_state: false
+  write_contact_forces: false

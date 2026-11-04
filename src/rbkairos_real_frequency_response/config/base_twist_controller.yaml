@@ -1,0 +1,26 @@
+rbkairos_base_twist_controller:
+  ros__parameters:
+    command_topic: /base_cmd_vel
+    odom_topic: /rbkairos_base/odom
+    emergency_stop_topic: /emergency_stop
+    command_timeout_s: 0.25
+    max_vx_abs: 0.15
+    max_vy_abs: 0.03
+    max_wz_abs: 0.10
+    publish_odom: true
+    odom_publish_rate: 100.0
+    odom_frame_id: world
+    base_frame_id: summit_xl_2/base_footprint
+    stop_on_emergency_stop: true
+    command_interfaces:
+      - summit_xl_2/base_footprint/readwrite_vx
+      - summit_xl_2/base_footprint/readwrite_vy
+      - summit_xl_2/base_footprint/readwrite_wz
+    state_interfaces:
+      - summit_xl_2/base_footprint/read_x
+      - summit_xl_2/base_footprint/read_y
+      - summit_xl_2/base_footprint/read_qz
+      - summit_xl_2/base_footprint/read_qw
+      - summit_xl_2/base_footprint/readwrite_vx
+      - summit_xl_2/base_footprint/readwrite_vy
+      - summit_xl_2/base_footprint/readwrite_wz

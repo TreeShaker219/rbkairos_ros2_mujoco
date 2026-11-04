@@ -1,0 +1,20 @@
+# D4-B-2 runtime smoke only. This is not a formal search grid.
+schema_version: 4
+campaign_id: conditional_frf_reuse_smoke
+formal_search_authorized: false
+expected_candidate_count: 2
+
+fixed_parameters:
+  mu_low: 0.01
+  mu_high: 0.7
+  effort_limit_nm: 100.0
+  kd: 0.0
+  i_min_rule: -i_max
+
+cost:
+  tendon_weight: 0.5
+  frf_weight: 0.5
+
+candidates:
+  - {kp: 50.0, ki: 1.0, i_max: 1.0}
+  - {kp: 50.0, ki: 1.0, i_max: 3.0}

@@ -1,0 +1,24 @@
+# D4-B-1 syntax example only. These values are not a frozen formal search grid.
+schema_version: 4
+campaign_id: full_08271731
+formal_search_authorized: true
+expected_candidate_count: 2
+
+fixed_parameters:
+  mu_low: 0.01
+  mu_high: 0.7
+  effort_limit_nm: 100.0
+  kd: 0.0
+  i_min_rule: -i_max
+
+cost:
+  tendon_weight: 0.5
+  frf_weight: 0.5
+
+grid:
+  kp:
+    values: [3.0]
+  ki:
+    values: [3.0, 4.0]
+  i_max:
+    values: [20.0]

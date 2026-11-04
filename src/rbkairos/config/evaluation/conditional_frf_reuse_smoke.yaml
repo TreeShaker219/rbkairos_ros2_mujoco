@@ -1,0 +1,30 @@
+# Shorter observation budget and two FRF frequencies for the D4-B-2 smoke.
+# Safety and steady-state thresholds are inherited unchanged from default.yaml.
+managed:
+  startup_wait_s: 3.0
+  ros_graph_cleanup_wait_s: 3.0
+
+analyzers:
+  traction:
+    max_wait: 20.0
+    plots: false
+  frf:
+    plots: false
+    html: false
+
+traction_experiments:
+  x_v0p01:
+    max_wait_duration: 20.0
+  x_v0p05:
+    max_wait_duration: 20.0
+  x_v0p10:
+    max_wait_duration: 20.0
+  y_v0p01:
+    max_wait_duration: 20.0
+  y_v0p05:
+    max_wait_duration: 20.0
+  y_v0p10:
+    max_wait_duration: 20.0
+
+frf_experiment:
+  frequencies: [1.0, 4.0]

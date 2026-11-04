@@ -1,0 +1,15 @@
+<class_libraries>
+  <library path="rbkairos_base_ground_truth_plugin">
+    <class type="rbkairos::BaseGroundTruthPlugin"
+           base_class_type="mujoco_sim_ros2::MujocoPhysicsPlugin">
+      <description>Lightweight MuJoCo body ground-truth pose and twist publisher</description>
+    </class>
+  </library>
+
+  <library path="rbkairos_traction_tendon_observer_plugin">
+    <class type="rbkairos::TractionTendonObserverPlugin"
+           base_class_type="mujoco_sim_ros2::MujocoPhysicsPlugin">
+      <description>Read-only observer for MuJoCo tendon-limit force and geometry</description>
+    </class>
+  </library>
+</class_libraries>

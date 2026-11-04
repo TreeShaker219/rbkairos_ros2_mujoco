@@ -1,0 +1,22 @@
+# Build outputs, environments, and caches
+/build/
+/install/
+/log/
+/.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+/.vscode/
+/.agents/
+/.codex
+MUJOCO_LOG.TXT
+
+# Generated experiment data
+/data/
+/data_real_lab/
+
+# Laboratory robot models and generated runtime assets
+/src/rbkairos/urdf/
+/src/rbkairos/meshes/
+/src/rbkairos/mujoco/
+**/runtime_assets/

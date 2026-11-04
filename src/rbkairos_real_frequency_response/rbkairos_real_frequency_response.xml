@@ -1,0 +1,10 @@
+<library path="base_twist_controller">
+  <class
+    name="rbkairos_real_frequency_response/BaseTwistController"
+    type="rbkairos_real_frequency_response::BaseTwistController"
+    base_class_type="controller_interface::ControllerInterface">
+    <description>
+      Experimental RBKairos base Twist controller for real-robot frequency response tests.
+    </description>
+  </class>
+</library>
